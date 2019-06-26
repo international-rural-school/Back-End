@@ -12,12 +12,12 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableJpaAuditing
 @SpringBootApplication
 @EnableSwagger2
-public class RuralSchoolsApplication
+public class StartHereApplication
 {
 
     public static void main(String[] args)
     {
-        ApplicationContext ctx = SpringApplication.run(RuralSchoolsApplication.class, args);
+        ApplicationContext ctx = SpringApplication.run(StartHereApplication.class, args);
 
         DispatcherServlet dispatcherServlet = (DispatcherServlet) ctx.getBean("dispatcherServlet");
         dispatcherServlet.setThrowExceptionIfNoHandlerFound(true);
