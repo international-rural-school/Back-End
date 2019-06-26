@@ -1,7 +1,7 @@
 package com.lambdaschool.ruralSchools.controllers;
 
-import com.lambdaschool.ruralSchools.models.Quote;
-import com.lambdaschool.ruralSchools.services.QuoteService;
+import com.lambdaschool.ruralSchools.models.Inventory;
+import com.lambdaschool.ruralSchools.services.InventoryService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,77 +18,77 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/quotes")
-public class QuotesController
+@RequestMapping("/inventory")
+public class InventoryController
 {
     private static final Logger logger = LoggerFactory.getLogger(RolesController.class);
 
     @Autowired
-    QuoteService quoteService;
+    InventoryService inventoryService;
 
-    @GetMapping(value = "/quotes",
+    @GetMapping(value = "/inventories",
                 produces = {"application/json"})
-    public ResponseEntity<?> listAllQuotes(HttpServletRequest request)
+    public ResponseEntity<?> listAllInventories(HttpServletRequest request)
     {
         logger.trace(request.getRequestURI() + " accessed");
 
-        List<Quote> allQuotes = quoteService.findAll();
-        return new ResponseEntity<>(allQuotes, HttpStatus.OK);
+        List<Inventory> allInventories = inventoryService.findAll();
+        return new ResponseEntity<>(allInventories, HttpStatus.OK);
     }
 
 
-    @GetMapping(value = "/quote/{quoteId}",
+    @GetMapping(value = "/inventory/{inventoryId}",
                 produces = {"application/json"})
-    public ResponseEntity<?> getQuote(HttpServletRequest request,
+    public ResponseEntity<?> getInventory(HttpServletRequest request,
                                       @PathVariable
-                                              Long quoteId)
+                                              Long inventoryId)
     {
         logger.trace(request.getRequestURI() + " accessed");
 
-        Quote q = quoteService.findQuoteById(quoteId);
+        Inventory q = inventoryService.findInventoryById(inventoryId);
         return new ResponseEntity<>(q, HttpStatus.OK);
     }
 
 
     @GetMapping(value = "/username/{userName}",
                 produces = {"application/json"})
-    public ResponseEntity<?> findQuoteByUserName(HttpServletRequest request,
+    public ResponseEntity<?> findInventoryByUserName(HttpServletRequest request,
                                                  @PathVariable
                                                          String userName)
     {
         logger.trace(request.getRequestURI() + " accessed");
 
-        List<Quote> theQuotes = quoteService.findByUserName(userName);
-        return new ResponseEntity<>(theQuotes, HttpStatus.OK);
+        List<Inventory> theInventories = inventoryService.findByUserName(userName);
+        return new ResponseEntity<>(theInventories, HttpStatus.OK);
     }
 
 
-    @PostMapping(value = "/quote")
-    public ResponseEntity<?> addNewQuote(HttpServletRequest request, @Valid
+    @PostMapping(value = "/inventory")
+    public ResponseEntity<?> addNewInventory(HttpServletRequest request, @Valid
     @RequestBody
-            Quote newQuote) throws URISyntaxException
+            Inventory newInventory) throws URISyntaxException
     {
         logger.trace(request.getRequestURI() + " accessed");
 
-        newQuote = quoteService.save(newQuote);
+        newInventory = inventoryService.save(newInventory);
 
         // set the location header for the newly created resource
         HttpHeaders responseHeaders = new HttpHeaders();
-        URI newQuoteURI = ServletUriComponentsBuilder.fromCurrentRequest().path("/{quoteid}").buildAndExpand(newQuote.getQuotesid()).toUri();
-        responseHeaders.setLocation(newQuoteURI);
+        URI newInventoryURI = ServletUriComponentsBuilder.fromCurrentRequest().path("/{inventoryid}").buildAndExpand(newInventory.getInventoriesid()).toUri();
+        responseHeaders.setLocation(newInventoryURI);
 
         return new ResponseEntity<>(null, responseHeaders, HttpStatus.CREATED);
     }
 
 
-    @DeleteMapping("/quote/{id}")
-    public ResponseEntity<?> deleteQuoteById(HttpServletRequest request,
+    @DeleteMapping("/inventory/{id}")
+    public ResponseEntity<?> deleteInventoryById(HttpServletRequest request,
                                              @PathVariable
                                                      long id)
     {
         logger.trace(request.getRequestURI() + " accessed");
 
-        quoteService.delete(id);
+        inventoryService.delete(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

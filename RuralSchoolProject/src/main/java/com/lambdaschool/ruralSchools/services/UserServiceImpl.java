@@ -1,7 +1,7 @@
 package com.lambdaschool.ruralSchools.services;
 
 import com.lambdaschool.ruralSchools.exceptions.ResourceNotFoundException;
-import com.lambdaschool.ruralSchools.models.Quote;
+import com.lambdaschool.ruralSchools.models.Inventory;
 import com.lambdaschool.ruralSchools.models.User;
 import com.lambdaschool.ruralSchools.models.UserRoles;
 import com.lambdaschool.ruralSchools.repository.RoleRepository;
@@ -79,9 +79,9 @@ public class UserServiceImpl implements UserDetailsService, UserService
         }
         newUser.setUserRoles(newRoles);
 
-        for (Quote q : user.getQuotes())
+        for (Inventory q : user.getInventories())
         {
-            newUser.getQuotes().add(new Quote(q.getQuote(), newUser));
+            newUser.getInventories().add(new Inventory(q.getInventory(), newUser));
         }
 
         return userrepos.save(newUser);
@@ -123,11 +123,11 @@ public class UserServiceImpl implements UserDetailsService, UserService
                     }
                 }
 
-                if (user.getQuotes().size() > 0)
+                if (user.getInventories().size() > 0)
                 {
-                    for (Quote q : user.getQuotes())
+                    for (Inventory q : user.getInventories())
                     {
-                        currentUser.getQuotes().add(new Quote(q.getQuote(), currentUser));
+                        currentUser.getInventories().add(new Inventory(q.getInventory(), currentUser));
                     }
                 }
 

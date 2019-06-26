@@ -1,8 +1,8 @@
 package com.lambdaschool.ruralSchools.services;
 
 import com.lambdaschool.ruralSchools.exceptions.ResourceNotFoundException;
-import com.lambdaschool.ruralSchools.models.Quote;
-import com.lambdaschool.ruralSchools.repository.QuoteRepository;
+import com.lambdaschool.ruralSchools.models.Inventory;
+import com.lambdaschool.ruralSchools.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,35 +12,35 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service(value = "quoteService")
-public class QuoteServiceImpl implements QuoteService
+@Service(value = "inventoryService")
+public class InventoryServiceImpl implements InventoryService
 {
     @Autowired
-    private QuoteRepository quoterepos;
+    private InventoryRepository inventoryrepos;
 
     @Override
-    public List<Quote> findAll()
+    public List<Inventory> findAll()
     {
-        List<Quote> list = new ArrayList<>();
-        quoterepos.findAll().iterator().forEachRemaining(list::add);
+        List<Inventory> list = new ArrayList<>();
+        inventoryrepos.findAll().iterator().forEachRemaining(list::add);
         return list;
     }
 
     @Override
-    public Quote findQuoteById(long id)
+    public Inventory findInventoryById(long id)
     {
-        return quoterepos.findById(id).orElseThrow(() -> new ResourceNotFoundException(Long.toString(id)));
+        return inventoryrepos.findById(id).orElseThrow(() -> new ResourceNotFoundException(Long.toString(id)));
     }
 
     @Override
     public void delete(long id)
     {
-        if (quoterepos.findById(id).isPresent())
+        if (inventoryrepos.findById(id).isPresent())
         {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (quoterepos.findById(id).get().getUser().getUsername().equalsIgnoreCase(authentication.getName()))
+            if (inventoryrepos.findById(id).get().getUser().getUsername().equalsIgnoreCase(authentication.getName()))
             {
-                quoterepos.deleteById(id);
+                inventoryrepos.deleteById(id);
             } else
             {
                 throw new ResourceNotFoundException(id + " " + authentication.getName());
@@ -53,16 +53,16 @@ public class QuoteServiceImpl implements QuoteService
 
     @Transactional
     @Override
-    public Quote save(Quote quote)
+    public Inventory save(Inventory inventory)
     {
-        return quoterepos.save(quote);
+        return inventoryrepos.save(inventory);
     }
 
     @Override
-    public List<Quote> findByUserName(String username)
+    public List<Inventory> findByUserName(String username)
     {
-        List<Quote> list = new ArrayList<>();
-        quoterepos.findAll().iterator().forEachRemaining(list::add);
+        List<Inventory> list = new ArrayList<>();
+        inventoryrepos.findAll().iterator().forEachRemaining(list::add);
 
         list.removeIf(q -> !q.getUser().getUsername().equalsIgnoreCase(username));
         return list;
